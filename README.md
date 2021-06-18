@@ -1,17 +1,27 @@
 # whois
 
+[![whois release (latest SemVer)](https://img.shields.io/github/v/release/alenichev/whois?sort=semver)](https://github.com/alenichev/whois/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/alenichev/whois.svg)](https://pkg.go.dev/github.com/alenichev/whois)
 [![Test Status](https://github.com/alenichev/whois/workflows/Go/badge.svg)](https://github.com/alenichev/whois/actions)
 
 
 Package whois provides simple whois protocol (rfc3912) implementation.
 
-## Importing
+## Installation
+```
+go get github.com/alenichev/whois
+```
+or import as package:
 ```Go
 import "github.com/alenichev/whois"
 ```
+an run `go get` without arguments.
 
 ## Usage examples
+```Go
+import "github.com/alenichev/whois"
+```
+ask "whois.iana.org" about "example.com":
 ```Go
 output, err := whois.MakeWhoisQuery("whois.iana.org", "example.com")
 if err != nil {
