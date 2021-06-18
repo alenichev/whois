@@ -4,4 +4,4 @@
 [![Test Status](https://github.com/alenichev/whois/workflows/Go/badge.svg)](https://github.com/alenichev/whois/actions)
 
 
-Package whois provides simple whois protocol (rfc3912) implementation
+Package whois provides simple whois protocol (rfc3912) implementation.
