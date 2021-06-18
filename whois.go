@@ -9,6 +9,12 @@ import (
 	"time"
 )
 
+var (
+	WhoisReadTimeout  time.Duration = 5
+	WhoisWriteTimeout time.Duration = 5
+	WhoisTotalTimeout time.Duration = 60
+)
+
 // MakeWhoisQuery makes query using whois protocol
 // for domain on host and return response.
 func MakeWhoisQuery(host, domain string) (string, error) {
@@ -18,7 +24,8 @@ func MakeWhoisQuery(host, domain string) (string, error) {
 		err error
 	)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(),
+		WhoisTotalTimeout*time.Second)
 	defer cancel()
 
 	conn, err := d.DialContext(ctx, "tcp", host+":43")
@@ -27,11 +34,18 @@ func MakeWhoisQuery(host, domain string) (string, error) {
 	}
 	defer conn.Close()
 
+	err = conn.SetWriteDeadline(time.Now().Add(WhoisWriteTimeout *
+		time.Second))
+	if err != nil {
+		return out, err
+	}
+
 	if _, err := conn.Write([]byte(domain + "\r\n")); err != nil {
 		return out, err
 	}
 
-	err = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+	err = conn.SetReadDeadline(time.Now().Add(WhoisReadTimeout *
+		time.Second))
 	if err != nil {
 		return out, err
 	}
