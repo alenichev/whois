@@ -10,8 +10,13 @@ import (
 )
 
 var (
-	WhoisReadTimeout  time.Duration = 5
+	// WhoisReadTimeout sets timeout for reading response.
+	WhoisReadTimeout time.Duration = 5
+
+	// WhoisWriteTimeout sets timeout for writing query.
 	WhoisWriteTimeout time.Duration = 5
+
+	// WhoisTotalTimeout sets total timeout.
 	WhoisTotalTimeout time.Duration = 60
 )
 
