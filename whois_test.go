@@ -6,7 +6,6 @@ import (
 )
 
 const (
-	ianaWhois  = "whois.iana.org"
 	exampleCom = "example.com"
 	rockersSu  = "rockers.su"
 )
@@ -25,9 +24,9 @@ source:       IANA
 `
 
 func TestExampleCom(t *testing.T) {
-	out, err := MakeWhoisQuery(ianaWhois, exampleCom)
+	out, err := Query(IANASever, exampleCom)
 	if err != nil {
-		t.Errorf("MakeWhoisQuery() error: %s", err)
+		t.Errorf("Query() error: %s", err)
 	}
 
 	if strings.Compare(exampleComOut, out) != 0 {
@@ -36,9 +35,9 @@ func TestExampleCom(t *testing.T) {
 }
 
 func TestRockersSu(t *testing.T) {
-	out, err := MakeWhoisQueryAll(rockersSu)
+	out, err := QueryAll(rockersSu)
 	if err != nil {
-		t.Errorf("MakeWhoisQueryAll() error: %s", err)
+		t.Errorf("QueryAll() error: %s", err)
 	}
 
 	if strings.Contains(out, "TCI") != true {

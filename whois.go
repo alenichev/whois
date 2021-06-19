@@ -9,24 +9,27 @@ import (
 	"time"
 )
 
-// WhoisReadTimeout sets timeout for reading response.
-var WhoisReadTimeout time.Duration = 5
+// ReadTimeout sets timeout for reading response.
+// Default: 5
+var ReadTimeout time.Duration = 5
 
-// WhoisWriteTimeout sets timeout for writing query.
-var WhoisWriteTimeout time.Duration = 5
+// WriteTimeout sets timeout for writing query.
+// Default: 5
+var WriteTimeout time.Duration = 5
 
-// WhoisTotalTimeout sets total timeout.
-var WhoisTotalTimeout time.Duration = 60
+// TotalTimeout sets total timeout.
+// Default: 60
+var TotalTimeout time.Duration = 60
 
 // IANA whois service address.
-const WhoisIANA = "whois.iana.org"
+const IANASever = "whois.iana.org"
 
 // WHOIS protocol port.
-const WhoisPort = "43"
+const PortNumber = "43"
 
 // MakeWhoisQuery makes query using whois protocol
 // for domain on host and return response.
-func MakeWhoisQuery(host, domain string) (string, error) {
+func Query(host, domain string) (string, error) {
 	var (
 		d   net.Dialer
 		out string
@@ -34,17 +37,17 @@ func MakeWhoisQuery(host, domain string) (string, error) {
 	)
 
 	ctx, cancel := context.WithTimeout(context.Background(),
-		WhoisTotalTimeout*time.Second)
+		TotalTimeout*time.Second)
 	defer cancel()
 
-	hostport := net.JoinHostPort(host, WhoisPort)
+	hostport := net.JoinHostPort(host, PortNumber)
 	conn, err := d.DialContext(ctx, "tcp", hostport)
 	if err != nil {
 		return out, err
 	}
 	defer conn.Close()
 
-	err = conn.SetWriteDeadline(time.Now().Add(WhoisWriteTimeout *
+	err = conn.SetWriteDeadline(time.Now().Add(WriteTimeout *
 		time.Second))
 	if err != nil {
 		return out, err
@@ -54,7 +57,7 @@ func MakeWhoisQuery(host, domain string) (string, error) {
 		return out, err
 	}
 
-	err = conn.SetReadDeadline(time.Now().Add(WhoisReadTimeout *
+	err = conn.SetReadDeadline(time.Now().Add(ReadTimeout *
 		time.Second))
 	if err != nil {
 		return out, err
@@ -72,13 +75,13 @@ func MakeWhoisQuery(host, domain string) (string, error) {
 // MakeWhoisQueryAll makes query using whois protocol
 // to "whois.iana.org" for domain and follows refer field
 // in response, if any.
-func MakeWhoisQueryAll(domain string) (string, error) {
+func QueryAll(domain string) (string, error) {
 	var (
 		out string
 		err error
 	)
 
-	out, err = MakeWhoisQuery(WhoisIANA, domain)
+	out, err = Query(IANASever, domain)
 	if err != nil {
 		return out, err
 	}
@@ -88,10 +91,10 @@ func MakeWhoisQueryAll(domain string) (string, error) {
 		refer := strings.Split(referString, " ")
 		referHost := refer[len(refer)-1]
 
-		out, err = MakeWhoisQuery(referHost, domain)
+		out, err = Query(referHost, domain)
 		if err != nil {
 			return out, err
 		}
 	}
-	return out, err
+	return out, nil
 }
