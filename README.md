@@ -22,14 +22,21 @@ import "github.com/alenichev/whois"
 ```
 ask "whois.iana.org" about "example.com":
 ```Go
-output, err := whois.MakeWhoisQuery("whois.iana.org", "example.com")
+output, err := whois.Query("whois.iana.org", "example.com")
 if err != nil {
     // error handling
 }
 ```
 or (final result, using refer field from IANA's response, if needed):
 ```Go
-output, err := whois.MakeWhoisQueryAll("example.com")
+output, err := whois.QueryAll("example.com")
+if err != nil {
+    // error handling
+}
+```
+use built-in parser and get Reply struct:
+```Go
+r, err := whois.GetReply("example.com")
 if err != nil {
     // error handling
 }
