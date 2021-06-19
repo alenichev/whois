@@ -18,8 +18,11 @@ var WhoisWriteTimeout time.Duration = 5
 // WhoisTotalTimeout sets total timeout.
 var WhoisTotalTimeout time.Duration = 60
 
-const whoisIANA = "whois.iana.org"
-const whoisPort = "43"
+// IANA whois service address.
+const WhoisIANA = "whois.iana.org"
+
+// WHOIS protocol port.
+const WhoisPort = "43"
 
 // MakeWhoisQuery makes query using whois protocol
 // for domain on host and return response.
@@ -34,7 +37,7 @@ func MakeWhoisQuery(host, domain string) (string, error) {
 		WhoisTotalTimeout*time.Second)
 	defer cancel()
 
-	hostport := net.JoinHostPort(host, whoisPort)
+	hostport := net.JoinHostPort(host, WhoisPort)
 	conn, err := d.DialContext(ctx, "tcp", hostport)
 	if err != nil {
 		return out, err
@@ -75,7 +78,7 @@ func MakeWhoisQueryAll(domain string) (string, error) {
 		err error
 	)
 
-	out, err = MakeWhoisQuery(whoisIANA, domain)
+	out, err = MakeWhoisQuery(WhoisIANA, domain)
 	if err != nil {
 		return out, err
 	}
