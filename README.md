@@ -2,8 +2,7 @@
 
 [![whois release (latest SemVer)](https://img.shields.io/github/v/release/alenichev/whois?sort=semver)](https://github.com/alenichev/whois/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/alenichev/whois.svg)](https://pkg.go.dev/github.com/alenichev/whois)
-[![Tests Status](https://github.com/alenichev/whois/workflows/tests/badge.svg)](https://github.com/alenichev/whois/actions)
-
+[![tests](https://github.com/alenichev/whois/actions/workflows/tests.yml/badge.svg)](https://github.com/alenichev/whois/actions/workflows/tests.yml)
 
 Package whois provides simple whois protocol ([RFC 3912](https://tools.ietf.org/html/rfc3912)) implementation.
 
